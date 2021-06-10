@@ -1,7 +1,7 @@
 {
-  "name": "module",
-  "title": "New Module",
-  "description": "",
+  "name": "5e-darker-dungeons",
+  "title": "5e: Darker Dungeons",
+  "description": "Darker Dungeons rules for DnD 5e",
   "version": "This is auto replaced",
   "library": "false",
   "manifestPlusVersion": "1.0.0",
@@ -14,6 +14,53 @@
       "discord": "discordID#0001"
     }
   ],
+  "packs": [
+    {
+      "name": "monsterlevels",
+      "label": "Monster Levels",
+      "system": "dnd5e",
+      "path": "./packs/monsterlevels.db",
+      "entity": "Item"
+    },
+    {
+      "name": "monsterroles",
+      "label": "Monster Roles",
+      "system": "dnd5e",
+      "path": "./packs/monsterroles.db",
+      "entity": "Item"
+    },
+    {
+      "name": "monsterranks",
+      "label": "Monster Ranks",
+      "system": "dnd5e",
+      "path": "./packs/monsterranks.db",
+      "entity": "Item"
+    },
+    {
+      "name": "monsterattributes",
+      "label": "Monster Attributes",
+      "system": "dnd5e",
+      "path": "./packs/monsterattributes.db",
+      "entity": "Item"
+    },
+    {
+      "name": "monstertraits",
+      "label": "Monster Traits",
+      "system": "dnd5e",
+      "path": "./packs/monstertraits.db",
+      "entity": "Item"
+    },
+    {
+      "name": "monsterpowers",
+      "label": "Monster Powers",
+      "system": "dnd5e",
+      "path": "./packs/monsterpowers.db",
+      "entity": "Item"
+    }
+  ],
+  "systems": [
+    "dnd5e"
+  ],
   "dependencies": [
 
   ],
@@ -21,13 +68,9 @@
     
   ],
   "esmodules": [
-    "/scripts/module.js"
-  ],
-  "scripts": [
-    "/scripts/lib/lib.js"
-  ],
-  "styles": [
-    "/styles/module.css"
+    "./scripts/module.js",
+    "./scripts/libWrapperShim.js",
+    "./scripts/taking-action/ability-checks.js"
   ],
   "languages": [
     {
