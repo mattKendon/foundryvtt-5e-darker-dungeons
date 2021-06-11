@@ -19,42 +19,42 @@
       "name": "monsterlevels",
       "label": "Monster Levels",
       "system": "dnd5e",
-      "path": "./packs/monsterlevels.db",
+      "path": "packs/monsterlevels.db",
       "entity": "Item"
     },
     {
       "name": "monsterroles",
       "label": "Monster Roles",
       "system": "dnd5e",
-      "path": "./packs/monsterroles.db",
+      "path": "packs/monsterroles.db",
       "entity": "Item"
     },
     {
       "name": "monsterranks",
       "label": "Monster Ranks",
       "system": "dnd5e",
-      "path": "./packs/monsterranks.db",
+      "path": "packs/monsterranks.db",
       "entity": "Item"
     },
     {
       "name": "monsterattributes",
       "label": "Monster Attributes",
       "system": "dnd5e",
-      "path": "./packs/monsterattributes.db",
+      "path": "packs/monsterattributes.db",
       "entity": "Item"
     },
     {
       "name": "monstertraits",
       "label": "Monster Traits",
       "system": "dnd5e",
-      "path": "./packs/monstertraits.db",
+      "path": "packs/monstertraits.db",
       "entity": "Item"
     },
     {
       "name": "monsterpowers",
       "label": "Monster Powers",
       "system": "dnd5e",
-      "path": "./packs/monsterpowers.db",
+      "path": "packs/monsterpowers.db",
       "entity": "Item"
     }
   ],
