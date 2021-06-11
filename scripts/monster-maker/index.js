@@ -18,7 +18,7 @@ function decodeHtml(html) {
 }
 
 function getMonsterFeatFromActor(actor, featName) {
-    let mls = actor.data.items.filter((i) => { return i.data.name.includes(featName)})
+    let mls = actor.data.items.filter((i) => { return i.name.includes(featName)})
 
     if (mls.length === 0) {
         return false;
@@ -51,7 +51,7 @@ function getMonsterFeatNumber(feat, key) {
 
 function getMonsterFeatAttribute(feat, key) {
     let parser = new DOMParser()
-    let dom = parser.parseFromString(feat.data.data.description.value, 'text/html')
+    let dom = parser.parseFromString(feat.data.description.value, 'text/html')
 
     return dom.getElementById(key).innerText
 }
@@ -94,6 +94,7 @@ export function monsterMakerApplyAbilities(actor, change) {
         if (change.value == 1) {
             st_value = 0
         }
+
         actorData['abilities'][parts[2]][parts[3]] = saving_throws[st_value];
 
     } else {
