@@ -1,20 +1,14 @@
 
 function getMonsterLevelFromActor(actor) {
-    return getMonsterFeatFromActor(actor, 'MonsterLevel')
+    return getMonsterFeatFromActor(actor, 'Monster Level')
 }
 
 function getMonsterRoleFromActor(actor) {
-    return getMonsterFeatFromActor(actor, 'MonsterRole')
+    return getMonsterFeatFromActor(actor, 'Monster Role')
 }
 
 function getMonsterRankFromActor(actor) {
-    return getMonsterFeatFromActor(actor, 'MonsterRank')
-}
-
-function decodeHtml(html) {
-    let txt = document.createElement("textarea");
-    txt.innerHTML = html;
-    return txt.value;
+    return getMonsterFeatFromActor(actor, 'Monster Rank')
 }
 
 function getMonsterFeatFromActor(actor, featName) {
