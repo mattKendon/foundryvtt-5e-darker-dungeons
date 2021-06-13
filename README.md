@@ -1,53 +1,22 @@
-![](https://img.shields.io/badge/Foundry-v0.7.9-informational)
-<!--- Downloads @ Latest Badge -->
-<!--- replace <user>/<repo> with your username/repository -->
-<!--- ![Latest Release Download Count](https://img.shields.io/github/downloads/<user>/<repo>/latest/module.zip) -->
+# Foundry VTT: 5e Darker Dungeons
 
-<!--- Forge Bazaar Install % Badge -->
-<!--- replace <your-module-name> with the `name` in your manifest -->
-<!--- ![Forge Installs](https://img.shields.io/badge/dynamic/json?label=Forge%20Installs&query=package.installs&suffix=%25&url=https%3A%2F%2Fforge-vtt.com%2Fapi%2Fbazaar%2Fpackage%2F<your-module-name>&colorB=4aa94a) -->
+Personal project to implement some rules from darker dungeons for a personal game on Foundry VTT (also includes some monster maker stuff).
 
+## Icons
 
-# How to use this Template to create a versioned Release
+Icons used from https://game-icons.net/
 
-1. Open your repository's releases page.
+| [Lorc](https://lorcblog.blogspot.com/) | |
+|----------------------------------------|-|
+| icons/monsterattributes/dex.svg | https://game-icons.net/1x1/lorc/cat.html |
+| icons/monsterattributes/str.svg | https://game-icons.net/1x1/lorc/bull.html |
+| icons/monsterattributes/wis.svg | https://game-icons.net/1x1/lorc/owl.html |
 
-![Where to click to open repository releases.](https://user-images.githubusercontent.com/7644614/93409301-9fd25080-f864-11ea-9e0c-bdd09e4418e4.png)
+| [Delapouite](https://delapouite.com/) | |
+|----------------------------------------|-|
+| icons/monsterattributes/con.svg | https://game-icons.net/1x1/delapouite/bear-head.html |
+| icons/monsterattributes/cha.svg | https://game-icons.net/1x1/delapouite/eagle-head.html |
 
-2. Click "Draft a new release"
-
-![Draft a new release button.](https://user-images.githubusercontent.com/7644614/93409364-c1333c80-f864-11ea-89f1-abfcb18a8d9f.png)
-
-3. Fill out the release version as the tag name.
-
-## <span color="red">Do not prefix your tag name with a `v`.</span>
-
-If you want to add details at this stage you can, or you can always come back later and edit them.
-
-![Release Creation Form](https://user-images.githubusercontent.com/7644614/93409543-225b1000-f865-11ea-9a19-f1906a724421.png)
-
-4. Hit submit.
-
-5. Wait a few minutes.
-
-A Github Action will run to populate the `module.json` and `module.zip` with the correct urls that you can then use to distribute this release. You can check on its status in the "Actions" tab.
-
-![Actions Tab](https://user-images.githubusercontent.com/7644614/93409820-c1800780-f865-11ea-8c6b-c3792e35e0c8.png)
-
-6. Grab the module.json url from the release's details page.
-
-![image](https://user-images.githubusercontent.com/7644614/93409960-10c63800-f866-11ea-83f6-270cc5d10b71.png)
-
-This `module.json` will only ever point at this release's `module.zip`, making it useful for sharing a specific version for compatibility purposes.
-
-7. You can use the url `https://github.com/<user>/<repo>/releases/latest/download/module.json` to refer to the manifest.
-
-This is the url you want to use to install the module typically, as it will get updated automatically.
-
-
-# FoundryVTT Module
-
-Does something, probably
-
-## Changelog
-
+| [Caro Asercion](https://game-icons.net/) | |
+|----------------------------------------|-|
+| icons/monsterattributes/int.svg | https://game-icons.net/1x1/caro-asercion/fox.html |
