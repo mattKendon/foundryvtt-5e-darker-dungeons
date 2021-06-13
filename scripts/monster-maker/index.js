@@ -185,5 +185,5 @@ export function monsterMakerApplySkills(actor, change) {
         sum +=  getMonsterFeatNumber(rank, 'mm-mr-' + parts[2] + '-val')
     }
 
-    actor.data.data[parts[1]][parts[2]][parts[3]] = sum
+    actor.data.data[parts[1]][parts[2]][parts[3]] += sum
 }
