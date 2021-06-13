@@ -13,6 +13,7 @@ Icons used from https://game-icons.net/
 | icons/monsterattributes/wis.svg | https://game-icons.net/1x1/lorc/owl.html |
 | icons/monsterattributes/lurker.svg | https://game-icons.net/1x1/lorc/cloak-dagger.html |
 | icons/monsterattributes/striker.svg | https://game-icons.net/1x1/lorc/sword-wound.html |
+| icons/monsterlevels/monsterlevel.svg | https://game-icons.net/1x1/lorc/imp-laugh.html |
 
 | [Delapouite](https://delapouite.com/) | |
 |----------------------------------------|-|
