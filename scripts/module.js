@@ -5,7 +5,8 @@ import {
     monsterMakerApplyHP,
     monsterMakerApplyAbilities,
     monsterMakerApplySkills,
-    monsterMakerApplyXP
+    monsterMakerApplyXP,
+    monsterMakerApplyInitiative
 } from "./monster-maker/index.js"
 import {libWrapper} from "./libWrapperShim.js";
 
@@ -34,4 +35,5 @@ Hooks.on("applyActiveEffect", monsterMakerApplyAC)
 Hooks.on("applyActiveEffect", monsterMakerApplyAbilities)
 Hooks.on("applyActiveEffect", monsterMakerApplyHP)
 Hooks.on("applyActiveEffect", monsterMakerApplySkills)
+Hooks.on("applyActiveEffect", monsterMakerApplyInitiative())
 Hooks.on("applyActiveEffect", monsterMakerApplyXP)

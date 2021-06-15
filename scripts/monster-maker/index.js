@@ -155,16 +155,14 @@ export function monsterMakerApplyXP(actor, change) {
     actor.data.data.details.xp.value = total
 }
 
-export function monsterMakerApplySkills(actor, change) {
+export function monsterMakerApplyInitiative(actor, change) {
 
     const changes = [
-        "data.skills.prc.mod",
         "data.attributes.init.bonus",
-        "data.skills.ste.mod",
     ]
 
     // actor is the actor being processed and change a key/value pair
-    if (!changes.includes(change.key)) return;
+    if (change.key == "data.attributes.init.bonus") return;
 
     let parts = change.key.split('.')
 
@@ -174,16 +172,41 @@ export function monsterMakerApplySkills(actor, change) {
     let sum =  Number(change.value)
 
     if (role) {
-        let trained = getMonsterFeatAttribute(role, 'mm-mrl-' + parts[2] + '-val')
+        let trained = getMonsterFeatAttribute(role, 'mm-mrl-init-val')
         if (trained) {
             let ml = getMonsterLevelFromActor(actor)
-            sum += getMonsterFeatNumber(ml, 'mm-ml-prof-val')
+            if (ml) {
+                sum += getMonsterFeatNumber(ml, 'mm-ml-prof-val')
+            }
         }
     }
+
+    if (rank) {
+        sum +=  getMonsterFeatNumber(rank, 'mm-mr-init-val')
+    }
+
+    actor.data.data.attributes.init.bonus += sum
+}
+
+export function monsterMakerApplySkills(actor, change) {
+
+    const changes = [
+        "data.skills.prc.mod",
+        "data.skills.ste.mod",
+    ]
+
+    // actor is the actor being processed and change a key/value pair
+    if (!changes.includes(change.key)) return;
+
+    let parts = change.key.split('.')
+
+    let rank = getMonsterRankFromActor(actor)
+
+    let sum =  Number(change.value)
 
     if (rank) {
         sum +=  getMonsterFeatNumber(rank, 'mm-mr-' + parts[2] + '-val')
     }
 
-    actor.data.data[parts[1]][parts[2]][parts[3]] = sum
+    actor.data.data[parts[1]][parts[2]][parts[3]] += sum
 }
