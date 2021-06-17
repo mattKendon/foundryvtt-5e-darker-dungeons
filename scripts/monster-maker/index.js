@@ -137,7 +137,7 @@ export function monsterMakerApplyHP(actor, change) {
         sum *=  getMonsterFeatNumber(rank, 'mm-mr-hp-val')
     }
 
-    actor.data.data.attributes.hp.max = sum
+    actor.data.data.attributes.hp.max = Math.ceil(sum)
 }
 
 export function monsterMakerApplyXP(actor, change) {
@@ -157,14 +157,8 @@ export function monsterMakerApplyXP(actor, change) {
 
 export function monsterMakerApplyInitiative(actor, change) {
 
-    const changes = [
-        "data.attributes.init.bonus",
-    ]
-
     // actor is the actor being processed and change a key/value pair
     if (change.key == "data.attributes.init.bonus") return;
-
-    let parts = change.key.split('.')
 
     let role = getMonsterRoleFromActor(actor)
     let rank = getMonsterRankFromActor(actor)
