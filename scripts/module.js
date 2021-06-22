@@ -1,5 +1,6 @@
 
 import {openSkills, secretKnowledge} from "./taking-action/ability-checks.js"
+import {computeEncumbrance} from "./active-inventory/index.js"
 import {
     monsterMakerApplyAC,
     monsterMakerApplyHP,
@@ -50,41 +51,7 @@ Hooks.once('ready', async function() {
     }, 'WRAPPER');
 
     console.log("Patching CONFIG.Actor.entityClass.prototype._computeEncumbrance");
-    libWrapper.register(MODULE_NAME, 'CONFIG.Actor.entityClass.prototype._computeEncumbrance', function (actorData) {
-        // Get the total weight from items
-        const physicalItems = ["weapon", "equipment", "consumable", "tool", "backpack", "loot"];
-        let bulk = actorData.items.reduce((bulk, i) => {
-            if ( !physicalItems.includes(i.type) ) return bulk;
-            const q = i.data.quantity || 0;
-            const w = i.data.slots || 0;
-            return bulk + (q * w);
-        }, 0);
-
-        // [Optional] add Currency Weight (for non-transformed actors)
-        if ( game.settings.get("dnd5e", "currencyWeight") && actorData.data.currency ) {
-            const currency = actorData.data.currency;
-            const numCoins = Object.values(currency).reduce((val, denom) => val += Math.max(denom, 0), 0);
-            bulk += numCoins / CONFIG.DND5E.encumbrance.currencyPerWeight;
-        }
-
-        // Determine the encumbrance size class
-        let mod = {
-            tiny: 0.5,
-            sm: 1,
-            med: 1,
-            lg: 2,
-            huge: 4,
-            grg: 8
-        }[actorData.data.traits.size] || 1;
-        if ( this.getFlag("dnd5e", "powerfulBuild") ) mod = Math.min(mod * 2, 8);
-
-        // Compute Encumbrance percentage
-        bulk = bulk.toNearest(0.1);
-        const max = actorData.data.abilities.str.value * CONFIG.DND5E.encumbrance.strMultiplier * mod;
-        const pct = Math.clamped((bulk * 100) / max, 0, 100);
-        return { value: bulk.toNearest(0.1), max, pct, encumbered: pct > (2/3) };
-
-    }, 'OVERRIDE');
+    libWrapper.register(MODULE_NAME, 'CONFIG.Actor.entityClass.prototype._computeEncumbrance', computeEncumbrance, 'OVERRIDE');
 
     Hooks.on("renderItemSheet", function(app, html, data) {
         let weight = html.find(`.item-properties .form-group input[name='data.weight']`)[0].parentElement;
