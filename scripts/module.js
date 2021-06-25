@@ -74,6 +74,14 @@ Hooks.once('ready', async function() {
         })
 
     })
+    Hooks.on("preCreateItem", function (entity, data) {
+        let slotsValue = entity.data.slots
+
+        Hooks.once("createItem", function (entity, data) {
+            entity.data.data.slots = slotsValue
+        })
+
+    })
 
 });
 
