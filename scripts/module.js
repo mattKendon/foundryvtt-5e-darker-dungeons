@@ -1,5 +1,6 @@
-
 import {openSkills, secretKnowledge} from "./taking-action/ability-checks.js"
+import ActorSheet5eCharacter from "../../../systems/dnd5e/module/actor/sheets/character.js"
+import configuration from "./configuration.js"
 import {computeEncumbrance} from "./active-inventory/index.js"
 import {
     monsterMakerApplyAC,
@@ -11,11 +12,10 @@ import {
 } from "./monster-maker/index.js"
 import {libWrapper} from "./libWrapperShim.js";
 
-const MODULE_NAME = "5e-darker-dungeons";
 
 Hooks.once('init', async function() {
     console.log("Initializing 5e-darker-dungeons");
-    game.settings.register(MODULE_NAME, "open-skills", {
+    game.settings.register(configuration.MODULE_NAME, "open-skills", {
         name: 'Open Skills',
         hint: 'Allow changing the ability modifier to be used for a skill check.',
         scope: 'world',
@@ -23,7 +23,7 @@ Hooks.once('init', async function() {
         default: false,
         type: Boolean,
     });
-    game.settings.register(MODULE_NAME, "secret-knowledge", {
+    game.settings.register(configuration.MODULE_NAME, "secret-knowledge", {
         name: 'Secret Knowledge',
         hint: 'Make all knowledge rolls secret.',
         scope: 'world',
@@ -33,14 +33,30 @@ Hooks.once('init', async function() {
     });
 });
 
+function addSlotsToItems(wrapper, data) {
+    try {
+        wrapper(data)
+
+        data.inventory.forEach((category) => {
+            category.items.forEach((item) => {
+                let s = item.flags["5e-darker-dungeons"].slots || 0
+                let q = item.data.quantity || 0
+                item.totalWeight = s*q
+            })
+        })
+
+    } catch (e) {console.error(e);}
+
+}
+
 Hooks.once('ready', async function() {
     console.log("Patching CONFIG.Actor.entityClass.prototype.rollSkill");
-    libWrapper.register(MODULE_NAME, 'CONFIG.Actor.entityClass.prototype.rollSkill', function(wrapper, skl, options) {
-        if (game.settings.get(MODULE_NAME, "open-skills")) {
+    libWrapper.register(configuration.MODULE_NAME, 'CONFIG.Actor.entityClass.prototype.rollSkill', function(wrapper, skl, options) {
+        if (game.settings.get(configuration.MODULE_NAME, "open-skills")) {
             options = openSkills(skl, options, this)
         }
 
-        if (game.settings.get(MODULE_NAME, "secret-knowledge")) {
+        if (game.settings.get(configuration.MODULE_NAME, "secret-knowledge")) {
             options = secretKnowledge(skl, options);
         }
 
@@ -51,9 +67,13 @@ Hooks.once('ready', async function() {
     }, 'WRAPPER');
 
     console.log("Patching CONFIG.Actor.entityClass.prototype._computeEncumbrance");
-    libWrapper.register(MODULE_NAME, 'CONFIG.Actor.entityClass.prototype._computeEncumbrance', computeEncumbrance, 'OVERRIDE');
+    libWrapper.register(configuration.MODULE_NAME, 'CONFIG.Actor.entityClass.prototype._computeEncumbrance', computeEncumbrance, 'OVERRIDE');
+
+    console.log("Patching game.dnd5e.applications.ActorSheet5eCharacter.prototype._prepareItems");
+    libWrapper.register(configuration.MODULE_NAME, 'game.dnd5e.applications.ActorSheet5eCharacter.prototype._prepareItems', addSlotsToItems, 'WRAPPER');
 
     Hooks.on("renderItemSheet", function(app, html, data) {
+        data.data.slots = app.object.getFlag(configuration.MODULE_NAME, 'slots')
         let weight = html.find(`.item-properties .form-group input[name='data.weight']`)[0].parentElement;
 
         if (weight) {
@@ -62,25 +82,36 @@ Hooks.once('ready', async function() {
 
     });
 
+    Hooks.on("renderActorSheet5eCharacter", function(app, html) {
+        html.find(`.item-detail.item-weight .item-detail`).each(function () {
+            this.innerText = this.innerText.replace("lbs.", "")
+        })
+        html.find(`.items-header .item-detail.item-weight`).each(function () {
+            this.innerText = "Slots"
+        })
+    });
+
+    Hooks.on("updateItem", function (entity, data) {
+        if (data.hasOwnProperty('data') && data.data.hasOwnProperty('slots')) {
+            entity.setFlag(configuration.MODULE_NAME, 'slots', data.data.slots)
+        }
+    })
+    Hooks.on("updateOwnedItem", function (entity, data) {
+        if (data.hasOwnProperty('data') && data.data.hasOwnProperty('slots')) {
+            entity.items.filter((i)=> i.data._id == data._id)[0].setFlag(configuration.MODULE_NAME, 'slots', data.data.slots)
+        }
+    })
+
     //Slots won't get carried over, so this gets the slots value
     //from the preCreateOwnedItem and then added a one off hook
     //to assign the slots value back to the item after it has
     //been stripped out.
-    Hooks.on("preCreateOwnedItem", function (entity, data) {
-        let slotsValue = data.data.slots
 
-        Hooks.once("createOwnedItem", function (entity, data) {
-            data.data.slots = slotsValue
-        })
-
+    Hooks.on("createOwnedItem", function (entity, data) {
+        data.data.slots = entity.items.filter((i)=> i.data._id == data._id)[0].getFlag(configuration.MODULE_NAME, 'slots')
     })
-    Hooks.on("preCreateItem", function (entity, data) {
-        let slotsValue = entity.data.slots
-
-        Hooks.once("createItem", function (entity, data) {
-            entity.data.data.slots = slotsValue
-        })
-
+    Hooks.once("createItem", function (entity) {
+        entity.data.data.slots = entity.getFlag(configuration.MODULE_NAME, 'slots')
     })
 
 });
@@ -94,5 +125,5 @@ Hooks.on("applyActiveEffect", monsterMakerApplyAC)
 Hooks.on("applyActiveEffect", monsterMakerApplyAbilities)
 Hooks.on("applyActiveEffect", monsterMakerApplyHP)
 Hooks.on("applyActiveEffect", monsterMakerApplySkills)
-Hooks.on("applyActiveEffect", monsterMakerApplyInitiative())
+Hooks.on("applyActiveEffect", monsterMakerApplyInitiative)
 Hooks.on("applyActiveEffect", monsterMakerApplyXP)

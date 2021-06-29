@@ -1,4 +1,6 @@
 
+import configuration from "../configuration.js"
+
 const BASE_BY_SIZE = {
     'tiny': {'base': 6, 'mod': 1, 'min': 5},
     'sm': {'base': 14, 'mod': 1, 'min': 10},
@@ -27,14 +29,16 @@ export function computeEncumbrance(actorData) {
     const powerfulBuild = this.getFlag("dnd5e", "powerfulBuild")
 
     const physicalItems = ["weapon", "equipment", "consumable", "tool", "backpack", "loot"];
+    const attireItems = ['clothing', 'bonus', 'natural', 'trinket']
     let bulk = actorData.items.reduce((bulk, i) => {
         if ( !physicalItems.includes(i.type) ) return bulk;
+        if (i.type === 'equipment' && attireItems.includes(i.data.armor.type) && i.data.equipped) return bulk;
         const q = i.data.quantity || 0;
-        const w = i.data.slots || 0;
+        const w = i.flags[configuration.MODULE_NAME].slots || 0;
         return bulk + (q * w);
     }, 0);
 
-    // [Optional] add Currency Weight (for non-transformed actors)
+    // [Optional] add Currency Weight (4for non-transformed actors)
     if ( game.settings.get("dnd5e", "currencyWeight") && actorData.data.currency ) {
         const currency = actorData.data.currency;
         const numCoins = Object.values(currency).reduce((val, denom) => val += Math.max(denom, 0), 0);
