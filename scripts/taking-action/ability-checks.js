@@ -34,3 +34,7 @@ export function secretKnowledge(skl, options) {
 
     return options
 }
+
+export function intelligentInitiative(actor) {
+    actor.data.data.attributes.init.mod = actor.data.data.abilities.int.mod
+}

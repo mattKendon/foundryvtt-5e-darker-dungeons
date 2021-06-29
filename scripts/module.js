@@ -1,5 +1,5 @@
 
-import {openSkills, secretKnowledge} from "./taking-action/ability-checks.js"
+import {openSkills, secretKnowledge, intelligentInitiative} from "./taking-action/ability-checks.js"
 import {
     monsterMakerApplyAC,
     monsterMakerApplyHP,
@@ -30,9 +30,30 @@ Hooks.once('init', async function() {
         default: false,
         type: Boolean,
     });
+    game.settings.register(MODULE_NAME, "intelligent-initiative", {
+        name: 'Intelligent Initiative',
+        hint: 'Use Intelligence for initiative.',
+        scope: 'world',
+        config: true,
+        default: false,
+        type: Boolean,
+    });
 });
 
 Hooks.once('ready', async function() {
+    console.log("Patching CONFIG.Actor.entityClass.prototype.rollInitiative");
+    libWrapper.register(MODULE_NAME, 'CONFIG.Actor.entityClass.prototype.rollInitiative', function(wrapper, ...args) {
+
+        if (game.settings.get(MODULE_NAME, "intelligent-initiative")) {
+            intelligentInitiative(this)
+        }
+
+        try {
+            wrapper(args);
+        } catch (e) {console.error(e);}
+
+    }, 'WRAPPER');
+
     console.log("Patching CONFIG.Actor.entityClass.prototype.rollSkill");
     libWrapper.register(MODULE_NAME, 'CONFIG.Actor.entityClass.prototype.rollSkill', function(wrapper, skl, options) {
         if (game.settings.get(MODULE_NAME, "open-skills")) {
