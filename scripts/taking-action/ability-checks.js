@@ -1,4 +1,10 @@
-export default function patchActor5eRollSkill(wrapper, ...args) {
+
+const KNOWLEDGE_SKILLS = [
+    'arc', 'his', 'ins', 'inv', 'med',
+    'nat', 'prc', 'rel', 'sur'
+]
+
+export function openSkills(wrapper, ...args) {
 
     const skl = this.data.data.skills[args[0]]
 
@@ -22,5 +28,16 @@ export default function patchActor5eRollSkill(wrapper, ...args) {
         return wrapper(...args);
     } catch (e) {console.error(e);}
 
+}
+
+export function secretKnowledge(wrapper, ...args) {
+
+    if (KNOWLEDGE_SKILLS.includes(args[0])) {
+        args[1] = mergeObject({rollMode: "blindroll"}, args[1])
+    }
+
+    try {
+        return wrapper(...args);
+    } catch (e) {console.error(e);}
 
 }

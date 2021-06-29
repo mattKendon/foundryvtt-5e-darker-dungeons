@@ -1,5 +1,5 @@
 
-import patchActor5eRollSkill from "./taking-action/ability-checks.js"
+import {openSkills, secretKnowledge} from "./taking-action/ability-checks.js"
 import {
     monsterMakerApplyAC,
     monsterMakerApplyHP,
@@ -22,12 +22,24 @@ Hooks.once('init', async function() {
         default: false,
         type: Boolean,
     });
+    game.settings.register(MODULE_NAME, "secret-knowledge", {
+        name: 'Secret Knowledge',
+        hint: 'Make all knowledge rolls secret.',
+        scope: 'world',
+        config: true,
+        default: false,
+        type: Boolean,
+    });
 });
 
 Hooks.once('ready', async function() {
     if (game.settings.get(MODULE_NAME, "open-skills")) {
         console.log("Patching CONFIG.Actor.entityClass.prototype.rollSkill");
-        libWrapper.register(MODULE_NAME, 'CONFIG.Actor.documentClass.prototype.rollSkill', patchActor5eRollSkill, 'WRAPPER');
+        libWrapper.register(MODULE_NAME, 'CONFIG.Actor.entityClass.prototype.rollSkill', openSkills, 'WRAPPER');
+    }
+    if (game.settings.get(MODULE_NAME, "secret-knowledge")) {
+        console.log("Patching CONFIG.Actor.entityClass.prototype.rollSkill");
+        libWrapper.register(MODULE_NAME, 'CONFIG.Actor.entityClass.prototype.rollSkill', secretKnowledge, 'WRAPPER');
     }
 });
 
