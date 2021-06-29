@@ -1,43 +1,36 @@
 
 const KNOWLEDGE_SKILLS = [
     'arc', 'his', 'ins', 'inv', 'med',
-    'nat', 'prc', 'rel', 'sur'
+    'nat', 'prc', 'rel'
 ]
 
-export function openSkills(wrapper, ...args) {
+export function openSkills(skl, options, actor) {
 
-    const skl = this.data.data.skills[args[0]]
+    const skill = actor.data.data.skills[skl]
 
-    let options = args[1]
     let parts = ['@prof']
 
     if (options.parts?.length > 0) {
         parts.push(...options.parts);
     }
 
-    args[1] = mergeObject(mergeObject({
+    options = mergeObject(mergeObject({
         data: {
-            prof: skl.prof,
-            abilities: this.data.data.abilities,
-            ability: skl.ability
+            prof: skill.prof,
+            abilities: actor.data.data.abilities,
+            ability: skill.ability
         },
         template: "modules/5e-darker-dungeons/templates/chat/roll-skill-dialog.html"
     }, options), {parts: parts})
 
-    try {
-        return wrapper(...args);
-    } catch (e) {console.error(e);}
-
+    return options
 }
 
-export function secretKnowledge(wrapper, ...args) {
+export function secretKnowledge(skl, options) {
 
-    if (KNOWLEDGE_SKILLS.includes(args[0])) {
-        args[1] = mergeObject({rollMode: "blindroll"}, args[1])
+    if (KNOWLEDGE_SKILLS.includes(skl)) {
+        options = mergeObject({rollMode: "blindroll"}, options)
     }
 
-    try {
-        return wrapper(...args);
-    } catch (e) {console.error(e);}
-
+    return options
 }

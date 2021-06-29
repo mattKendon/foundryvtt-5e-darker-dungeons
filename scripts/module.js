@@ -33,14 +33,21 @@ Hooks.once('init', async function() {
 });
 
 Hooks.once('ready', async function() {
-    if (game.settings.get(MODULE_NAME, "open-skills")) {
-        console.log("Patching CONFIG.Actor.entityClass.prototype.rollSkill");
-        libWrapper.register(MODULE_NAME, 'CONFIG.Actor.entityClass.prototype.rollSkill', openSkills, 'WRAPPER');
-    }
-    if (game.settings.get(MODULE_NAME, "secret-knowledge")) {
-        console.log("Patching CONFIG.Actor.entityClass.prototype.rollSkill");
-        libWrapper.register(MODULE_NAME, 'CONFIG.Actor.entityClass.prototype.rollSkill', secretKnowledge, 'WRAPPER');
-    }
+    console.log("Patching CONFIG.Actor.entityClass.prototype.rollSkill");
+    libWrapper.register(MODULE_NAME, 'CONFIG.Actor.entityClass.prototype.rollSkill', function(wrapper, skl, options) {
+        if (game.settings.get(MODULE_NAME, "open-skills")) {
+            options = openSkills(skl, options, this)
+        }
+
+        if (game.settings.get(MODULE_NAME, "secret-knowledge")) {
+            options = secretKnowledge(skl, options);
+        }
+
+        try {
+            return wrapper(skl, options);
+        } catch (e) {console.error(e);}
+
+    }, 'WRAPPER');
 });
 
 Hooks.on("applyActiveEffect", monsterMakerApplyAC)
