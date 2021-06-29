@@ -1,26 +1,36 @@
-export default function patchActor5eRollSkill(wrapper, ...args) {
 
-    const skl = this.data.data.skills[args[0]]
+const KNOWLEDGE_SKILLS = [
+    'arc', 'his', 'ins', 'inv', 'med',
+    'nat', 'prc', 'rel'
+]
 
-    let options = args[1]
+export function openSkills(skl, options, actor) {
+
+    const skill = actor.data.data.skills[skl]
+
     let parts = ['@prof']
 
     if (options.parts?.length > 0) {
         parts.push(...options.parts);
     }
 
-    args[1] = mergeObject(mergeObject({
+    options = mergeObject(mergeObject({
         data: {
-            prof: skl.prof,
-            abilities: this.data.data.abilities,
-            ability: skl.ability
+            prof: skill.prof,
+            abilities: actor.data.data.abilities,
+            ability: skill.ability
         },
         template: "modules/5e-darker-dungeons/templates/chat/roll-skill-dialog.html"
     }, options), {parts: parts})
 
-    try {
-        return wrapper(...args);
-    } catch (e) {console.error(e);}
+    return options
+}
 
+export function secretKnowledge(skl, options) {
 
+    if (KNOWLEDGE_SKILLS.includes(skl)) {
+        options = mergeObject({rollMode: "blindroll"}, options)
+    }
+
+    return options
 }
