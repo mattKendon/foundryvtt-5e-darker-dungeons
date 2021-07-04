@@ -34,10 +34,11 @@ export function computeEncumbrance(actorData) {
         if ( !physicalItems.includes(i.type) ) return bulk;
         if (i.type === 'equipment' && attireItems.includes(i.data.armor.type) && i.data.equipped) return bulk;
         const q = i.data.quantity || 0;
-        let w = 0
+        let w;
         try {
             w = i.flags[configuration.MODULE_NAME].slots || 0;
         } catch {
+            w = 0
         }
         return bulk + (q * w);
     }, 0);
