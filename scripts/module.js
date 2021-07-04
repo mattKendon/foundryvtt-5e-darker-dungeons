@@ -39,9 +39,13 @@ function addSlotsToItems(wrapper, data) {
 
         data.inventory.forEach((category) => {
             category.items.forEach((item) => {
-                let s = item.flags["5e-darker-dungeons"].slots || 0
-                let q = item.data.quantity || 0
-                item.totalWeight = s*q
+                try {
+                    let s = item.flags["5e-darker-dungeons"].slots || 0
+                    let q = item.data.quantity || 0
+                    item.totalWeight = s*q
+                } catch (e) {
+                    item.totalWeight = 0
+                }
             })
         })
 
