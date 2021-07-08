@@ -28,15 +28,16 @@ export function computeEncumbrance(actorData) {
 
     const powerfulBuild = this.getFlag("dnd5e", "powerfulBuild")
 
+    // Get the total weight from items
     const physicalItems = ["weapon", "equipment", "consumable", "tool", "backpack", "loot"];
     const attireItems = ['clothing', 'bonus', 'natural', 'trinket']
     let bulk = actorData.items.reduce((bulk, i) => {
         if ( !physicalItems.includes(i.type) ) return bulk;
-        if (i.type === 'equipment' && attireItems.includes(i.data.armor.type) && i.data.equipped) return bulk;
-        const q = i.data.quantity || 0;
+        if (i.type === 'equipment' && attireItems.includes(i.data.data.armor.type) && i.data.data.equipped) return bulk;
+        const q = i.data.data.quantity || 0;
         let w;
         try {
-            w = i.flags[configuration.MODULE_NAME].slots || 0;
+            w = i.getFlag(configuration.MODUuLE_NAME, 'slots') || 0;
         } catch {
             w = 0
         }
