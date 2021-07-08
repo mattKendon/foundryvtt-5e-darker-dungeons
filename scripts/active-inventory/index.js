@@ -37,7 +37,7 @@ export function computeEncumbrance(actorData) {
         const q = i.data.data.quantity || 0;
         let w;
         try {
-            w = i.getFlag(configuration.MODUuLE_NAME, 'slots') || 0;
+            w = i.getFlag(configuration.MODULE_NAME, 'slots') || 0;
         } catch {
             w = 0
         }
