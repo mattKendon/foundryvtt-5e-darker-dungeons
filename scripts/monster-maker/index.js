@@ -45,7 +45,7 @@ function getMonsterFeatNumber(feat, key) {
 
 function getMonsterFeatAttribute(feat, key) {
     let parser = new DOMParser()
-    let dom = parser.parseFromString(feat.data.description.value, 'text/html')
+    let dom = parser.parseFromString(feat.data.data.description.value, 'text/html')
 
     return dom.getElementById(key).innerText
 }

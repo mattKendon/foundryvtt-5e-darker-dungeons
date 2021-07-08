@@ -56,6 +56,13 @@
       "system": "dnd5e",
       "path": "packs/monsterpowers.db",
       "entity": "Item"
+    },
+    {
+      "name": "activeinventoryitems",
+      "label": "Active Inventory Items (SRD)",
+      "system": "dnd5e",
+      "path": "packs/activeinventoryitems.db",
+      "entity": "Item"
     }
   ],
   "systems": [
