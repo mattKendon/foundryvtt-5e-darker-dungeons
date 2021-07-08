@@ -10,17 +10,9 @@ export function openSkills(skl, options, actor) {
 
     let parts = ['@prof']
 
-    if (options.parts?.length > 0) {
-        parts.push(...options.parts);
-    }
-
     options = mergeObject(mergeObject({
-        data: {
-            prof: skill.prof,
-            abilities: actor.data.data.abilities,
-            ability: skill.ability
-        },
-        template: "modules/5e-darker-dungeons/templates/chat/roll-skill-dialog.html"
+        chooseModifier: true,
+        data: mergeObject(actor.getRollData(), {item: {ability: skill.ability}}),
     }, options), {parts: parts})
 
     return options
