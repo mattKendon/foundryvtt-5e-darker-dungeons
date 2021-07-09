@@ -49,26 +49,6 @@ Hooks.once('init', async function() {
     });
 });
 
-function addSlotsToItems(wrapper, data) {
-    try {
-        wrapper(data)
-
-        data.inventory.forEach((category) => {
-            category.items.forEach((item) => {
-                try {
-                    let s = item.flags["5e-darker-dungeons"].slots || 0
-                    let q = item.data.quantity || 0
-                    item.totalWeight = s*q
-                } catch (e) {
-                    item.totalWeight = 0
-                }
-            })
-        })
-
-    } catch (e) {console.error(e);}
-
-}
-
 Hooks.once('ready', async function() {
     console.log("Patching CONFIG.Actor.entityClass.prototype.rollSkill");
     libWrapper.register(configuration.MODULE_NAME, 'CONFIG.Actor.entityClass.prototype.rollSkill', function(wrapper, skl, options) {
@@ -90,9 +70,6 @@ Hooks.once('ready', async function() {
 
         console.log("Patching CONFIG.Actor.entityClass.prototype._computeEncumbrance");
         libWrapper.register(configuration.MODULE_NAME, 'CONFIG.Actor.entityClass.prototype._computeEncumbrance', computeEncumbrance, 'OVERRIDE');
-
-        console.log("Patching game.dnd5e.applications.ActorSheet5eCharacter.prototype._prepareItems");
-        libWrapper.register(configuration.MODULE_NAME, 'game.dnd5e.applications.ActorSheet5eCharacter.prototype._prepareItems', addSlotsToItems, 'WRAPPER');
 
         Hooks.on("renderActorSheet5eCharacter", function(app, html) {
             html.find(`.item-detail.item-weight .item-detail`).each(function () {
