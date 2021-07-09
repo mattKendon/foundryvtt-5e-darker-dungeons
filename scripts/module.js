@@ -127,12 +127,42 @@ Hooks.once('ready', async function() {
         Hooks.once("createItem", function (entity) {
             entity.data.data.slots = entity.getFlag(configuration.MODULE_NAME, 'slots')
         })
+
+
+
+
+        Hooks.on("renderItemSheet", function(app, html, data) {
+            data.data.attire = app.object.getFlag(configuration.MODULE_NAME, 'attire')
+            let weight = html.find(`.item-properties .form-group input[name='data.weight']`)[0].parentElement;
+
+            if (weight) {
+                renderItemAttireField(weight, data)
+            }
+
+        });
+
+        Hooks.on("updateItem", function (entity, data) {
+            if (data.hasOwnProperty('data') && data.data.hasOwnProperty('attire')) {
+                entity.setFlag(configuration.MODULE_NAME, 'attire', data.data.attire)
+            }
+        })
+        Hooks.on("updateOwnedItem", function (entity, data) {
+            if (data.hasOwnProperty('data') && data.data.hasOwnProperty('attire')) {
+                entity.items.filter((i)=> i.data._id == data._id)[0].setFlag(configuration.MODULE_NAME, 'attire', data.data.attire)
+            }
+        })
+
     }
 
 });
 
 async function renderItemSlotsField(weight,  data) {
     let el = await renderTemplate('modules/5e-darker-dungeons/templates/item-slots-field.html', data)
+    $(weight).after(el)
+}
+
+async function renderItemAttireField(weight,  data) {
+    let el = await renderTemplate('modules/5e-darker-dungeons/templates/item-attire-field.html', data)
     $(weight).after(el)
 }
 

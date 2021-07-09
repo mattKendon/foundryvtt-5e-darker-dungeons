@@ -33,7 +33,7 @@ export function computeEncumbrance(actorData) {
     const attireItems = ['clothing', 'bonus', 'natural', 'trinket']
     let bulk = actorData.items.reduce((bulk, i) => {
         if ( !physicalItems.includes(i.type) ) return bulk;
-        if (i.type === 'equipment' && attireItems.includes(i.data.data.armor.type) && i.data.data.equipped) return bulk;
+        if (i.getFlag(configuration.MODULE_NAME, 'attire') && i.data.data.equipped) return bulk;
         const q = i.data.data.quantity || 0;
         let w;
         try {
