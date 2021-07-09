@@ -30,17 +30,11 @@ export function computeEncumbrance(actorData) {
 
     // Get the total weight from items
     const physicalItems = ["weapon", "equipment", "consumable", "tool", "backpack", "loot"];
-    const attireItems = ['clothing', 'bonus', 'natural', 'trinket']
     let bulk = actorData.items.reduce((bulk, i) => {
         if ( !physicalItems.includes(i.type) ) return bulk;
         if (i.getFlag(configuration.MODULE_NAME, 'attire') && i.data.data.equipped) return bulk;
         const q = i.data.data.quantity || 0;
-        let w;
-        try {
-            w = i.getFlag(configuration.MODULE_NAME, 'slots') || 0;
-        } catch {
-            w = 0
-        }
+        const w = i.data.data.weight || 0;
         return bulk + (q * w);
     }, 0);
 
