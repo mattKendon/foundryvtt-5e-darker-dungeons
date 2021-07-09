@@ -39,6 +39,14 @@ Hooks.once('init', async function() {
         default: false,
         type: Boolean,
     });
+    game.settings.register(configuration.MODULE_NAME, "pack-endurance", {
+        name: 'Active Inventory: Pack Endurance',
+        hint: 'Use strength or constitution when calculating maximum number of slots',
+        scope: 'world',
+        config: true,
+        default: false,
+        type: Boolean,
+    });
 });
 
 function addSlotsToItems(wrapper, data) {
