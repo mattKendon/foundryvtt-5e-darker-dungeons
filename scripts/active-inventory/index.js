@@ -52,9 +52,15 @@ export function computeEncumbrance(actorData) {
         bulk += Math.max((numCoins / 100) - 1, 0);
     }
 
+    let str = actorData.data.abilities.str.mod
+
+    if (game.settings.get(configuration.MODULE_NAME, "pack-endurance")) {
+        str = Math.max(str, actorData.data.abilities.con.mod)
+    }
+
     // Compute Encumbrance percentage
     bulk = bulk.toNearest(0.1);
-    const unencumbered = calculateMaxInventorySlots(actorData.data.traits.size, actorData.data.abilities.str.mod, powerfulBuild);
+    const unencumbered = calculateMaxInventorySlots(actorData.data.traits.size, str, powerfulBuild);
     const max = unencumbered * 1.5;
     const pct = Math.clamped((bulk * 100) / max, 0, 100);
     const value = bulk.toNearest(0.1)
