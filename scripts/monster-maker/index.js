@@ -158,7 +158,7 @@ export function monsterMakerApplyXP(actor, change) {
 export function monsterMakerApplyInitiative(actor, change) {
 
     // actor is the actor being processed and change a key/value pair
-    if (change.key !== "data.attributes.init.bonus") return;
+    if (change.key !== "data.attributes.init.value") return;
 
     let role = getMonsterRoleFromActor(actor)
     let rank = getMonsterRankFromActor(actor)
