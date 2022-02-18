@@ -8,12 +8,10 @@ export function openSkills(skl, options, actor) {
 
     const skill = actor.data.data.skills[skl]
 
-    let parts = ['@prof']
-
     options = mergeObject(mergeObject({
         chooseModifier: true,
         data: mergeObject(actor.getRollData(), {item: {ability: skill.ability}}),
-    }, options), {parts: parts})
+    }, options))
 
     return options
 }
